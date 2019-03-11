@@ -11,8 +11,9 @@ local function is_tile_memorized(pos)
 end
 
 -- TODO: Make magic constants more understandable.
-local TILE_KNOWN_TRAP = 234
+local FEAT_KNOWN_TRAP = 234
 local PASSABLE_FEATS = {726, 728, 730, 733} -- doors
+local TILE_VOTE_BOX = 332
 
 local function is_passable_feat(feat)
    for _, id in ipairs(PASSABLE_FEATS) do
@@ -25,6 +26,9 @@ end
 
 -- Like Map.is_solid(), but returns false for closed doors.
 local function is_solid(pos)
+   if Map.get_tile(pos.x, pos.y) == TILE_VOTE_BOX then
+      return true
+   end
    if Map.is_solid(pos.x, pos.y) then
       local feat = Map.get_feat(pos.x, pos.y)
       return not is_passable_feat(feat.id)
@@ -69,7 +73,7 @@ local function mef_blocks(pos)
 end
 
 local function has_trap(pos)
-   return Map.get_feat(pos.x, pos.y).id == TILE_KNOWN_TRAP
+   return Map.get_feat(pos.x, pos.y).id == FEAT_KNOWN_TRAP
 end
 
 local function is_safe_to_travel(pos)
