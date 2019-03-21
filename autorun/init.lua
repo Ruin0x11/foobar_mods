@@ -217,14 +217,14 @@ end
 -- Event callback functions
 --
 
-local function on_damaged(chara)
-   if Chara.is_player(chara) then
+local function on_damaged(e)
+   if Chara.is_player(e.chara) then
       attacked = true
    end
 end
 
-local function on_killed(chara)
-   if chara and Chara.is_player(chara) then
+local function on_killed(e)
+   if e.chara and Chara.is_player(e.chara) then
       Autorun.stop()
    end
 end
@@ -276,12 +276,12 @@ end
 -- action/activity system, to allow things like player damage to be
 -- consistently handled. It makes logical sense since control is taken
 -- away from the player.
-Event.register(Event.EventKind.PlayerTurn, step_autorun)
+Event.register("core.player_turn_started", step_autorun)
 
-Event.register(Event.EventKind.CharaDamaged, on_damaged)
-Event.register(Event.EventKind.CharaKilled, on_killed)
-Event.register(Event.EventKind.MapInitialized, on_map_initialized)
-Event.register(Event.EventKind.GameInitialized, on_map_initialized)
+Event.register("core.character_damaged", on_damaged)
+Event.register("core.character_killed", on_killed)
+Event.register("core.map_initialized", on_map_initialized)
+Event.register("core.game_initialized", on_map_initialized)
 -- Event.register(Event.EventKind.MenuEntered, Macro.clear_queue)
 
 
